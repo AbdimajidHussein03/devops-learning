@@ -10,10 +10,12 @@ This folder contains my CI/CD assignment work inside my main `devops-learning` r
 devops-learning/
 ├── .github/
 │   └── workflows/
-│       ├── task-1-ci.yaml
-│       └── task-2-cd.yaml
+│       ├── ci.yaml
+│       └── cd.yaml
 └── cicd/
     ├── any-scripts/
+    │   ├── test.sh
+    │   └── docker-local.sh
     ├── screenshots/
     ├── task-1/
     ├── task-2/
@@ -29,7 +31,7 @@ I completed two CI/CD tasks:
 1. **Task 1:** A basic CI pipeline that runs Python unit tests automatically on push.
 2. **Task 2:** A CD workflow that builds and pushes a Docker image to GitHub Container Registry.
 
-I also added helper scripts inside `any-scripts/` to make it easier to run the local checks manually.
+I also added helper scripts inside `any-scripts/` to make local testing easier.
 
 ---
 
@@ -63,17 +65,17 @@ I first tested it locally using:
 python3 -m unittest discover
 ```
 
-After confirming the test passed locally, I created a GitHub Actions workflow to automate the same test on every push.
+After confirming the test passed locally, I created a GitHub Actions workflow to automate the same test on push.
 
 ## Workflow File
 
 ```text
-.github/workflows/task-1-ci.yaml
+.github/workflows/ci.yaml
 ```
 
 Relative link:
 
-[Task 1 CI Workflow](../.github/workflows/task-1-ci.yaml)
+[Task 1 CI Workflow](../.github/workflows/ci.yaml)
 
 ## Pipeline Steps
 
@@ -138,12 +140,12 @@ This confirmed that the Flask app worked correctly inside a Docker container bef
 ## Workflow File
 
 ```text
-.github/workflows/task-2-cd.yaml
+.github/workflows/cd.yaml
 ```
 
 Relative link:
 
-[Task 2 CD Workflow](../.github/workflows/task-2-cd.yaml)
+[Task 2 CD Workflow](../.github/workflows/cd.yaml)
 
 ## CD Pipeline Steps
 
@@ -182,29 +184,29 @@ cicd/any-scripts/
 ## Task 1 Helper Script
 
 ```text
-cicd/any-scripts/run-task-1-tests.sh
+cicd/any-scripts/test.sh
 ```
 
 This script runs the Task 1 Python unit tests locally.
 
-Run it with:
+Run it from the repository root with:
 
 ```bash
-bash cicd/any-scripts/run-task-1-tests.sh
+bash cicd/any-scripts/test.sh
 ```
 
 ## Task 2 Helper Script
 
 ```text
-cicd/any-scripts/run-task-2-docker-local.sh
+cicd/any-scripts/docker-local.sh
 ```
 
 This script builds and runs the Task 2 Flask Docker app locally.
 
-Run it with:
+Run it from the repository root with:
 
 ```bash
-bash cicd/any-scripts/run-task-2-docker-local.sh
+bash cicd/any-scripts/docker-local.sh
 ```
 
 Then open:
