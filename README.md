@@ -2,15 +2,21 @@
 
 This folder contains my CI/CD assignment work inside my main `devops-learning` repository.
 
-## Folder Structure
+---
+
+## Repository Structure
 
 ```text
 devops-learning/
+├── .github/
+│   └── workflows/
+│       ├── task-1-ci.yaml
+│       └── task-2-cd.yaml
 └── cicd/
-    ├── task-1/
-    ├── task-2/
     ├── any-scripts/
     ├── screenshots/
+    ├── task-1/
+    ├── task-2/
     └── README.md
 ```
 
@@ -23,13 +29,19 @@ I completed two CI/CD tasks:
 1. **Task 1:** A basic CI pipeline that runs Python unit tests automatically on push.
 2. **Task 2:** A CD workflow that builds and pushes a Docker image to GitHub Container Registry.
 
+I also added helper scripts inside `any-scripts/` to make it easier to run the local checks manually.
+
 ---
 
 # Task 1: Basic CI Pipeline
 
-For Task 1, I created a simple Python function and a unit test.
+## Overview
 
-Files used:
+For Task 1, I created a small Python project with a simple function and a unit test.
+
+The purpose of this task was to demonstrate a basic CI workflow where tests run automatically whenever code is pushed to GitHub.
+
+## Files
 
 ```text
 cicd/task-1/
@@ -39,29 +51,41 @@ cicd/task-1/
 └── README.md
 ```
 
-The test was first run locally using:
+## How It Works
+
+The `hello.py` file contains the Python code being tested.
+
+The `test_hello.py` file uses Python's built-in `unittest` framework to check that the function returns the expected output.
+
+I first tested it locally using:
 
 ```bash
 python3 -m unittest discover
 ```
 
-After confirming the test passed locally, I created a GitHub Actions workflow to run the test automatically on push.
+After confirming the test passed locally, I created a GitHub Actions workflow to automate the same test on every push.
 
-Workflow file:
+## Workflow File
 
 ```text
-../.github/workflows/task-1-ci.yaml
+.github/workflows/task-1-ci.yaml
 ```
 
-The CI pipeline:
+Relative link:
+
+[Task 1 CI Workflow](../.github/workflows/task-1-ci.yaml)
+
+## Pipeline Steps
+
+The Task 1 CI pipeline:
 
 1. Runs on push.
 2. Checks out the repository.
 3. Sets up Python.
-4. Moves into `cicd/task-1`.
-5. Runs the unit test.
+4. Changes into `cicd/task-1`.
+5. Runs the unit tests.
 
-Screenshot:
+## Screenshot
 
 ![Task 1 CI Success](screenshots/task-1-ci-success.png)
 
@@ -69,9 +93,13 @@ Screenshot:
 
 # Task 2: Docker CD Workflow
 
-For Task 2, I created a small Flask web app and containerised it using Docker.
+## Overview
 
-Files used:
+For Task 2, I created a small Flask web application and containerised it using Docker.
+
+The purpose of this task was to demonstrate a simple CD workflow where a Docker image is built and pushed automatically to GitHub Container Registry.
+
+## Files
 
 ```text
 cicd/task-2/
@@ -81,10 +109,22 @@ cicd/task-2/
 └── README.md
 ```
 
-The Flask app runs on port `5000` and includes:
+## Flask App
+
+The Flask app includes:
 
 * `/` homepage route
 * `/health` health check route
+
+The app runs on port `5000`.
+
+When run locally, it can be viewed at:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Docker
 
 I tested the Docker image locally using:
 
@@ -93,21 +133,31 @@ docker build -t task-2-cd-app .
 docker run --rm -p 5000:5000 task-2-cd-app
 ```
 
-Workflow file:
+This confirmed that the Flask app worked correctly inside a Docker container before pushing it through the CD pipeline.
+
+## Workflow File
 
 ```text
-../.github/workflows/task-2-cd.yaml
+.github/workflows/task-2-cd.yaml
 ```
 
-The CD pipeline:
+Relative link:
 
-1. Runs on push to `main`.
+[Task 2 CD Workflow](../.github/workflows/task-2-cd.yaml)
+
+## CD Pipeline Steps
+
+The Task 2 CD pipeline:
+
+1. Runs on push to the `main` branch.
 2. Checks out the repository.
 3. Logs in to GitHub Container Registry.
 4. Builds the Docker image from `cicd/task-2`.
 5. Pushes the image to GitHub Container Registry.
 
-Published Docker image:
+## Published Docker Image
+
+The Docker image was published to GitHub Container Registry as:
 
 ```text
 ghcr.io/abdimajidhussein03/task-2-cd-app:latest
@@ -119,37 +169,92 @@ Pull command:
 docker pull ghcr.io/abdimajidhussein03/task-2-cd-app:latest
 ```
 
-Screenshots:
+---
+
+# Helper Scripts
+
+I added two helper scripts inside:
+
+```text
+cicd/any-scripts/
+```
+
+## Task 1 Helper Script
+
+```text
+cicd/any-scripts/run-task-1-tests.sh
+```
+
+This script runs the Task 1 Python unit tests locally.
+
+Run it with:
+
+```bash
+bash cicd/any-scripts/run-task-1-tests.sh
+```
+
+## Task 2 Helper Script
+
+```text
+cicd/any-scripts/run-task-2-docker-local.sh
+```
+
+This script builds and runs the Task 2 Flask Docker app locally.
+
+Run it with:
+
+```bash
+bash cicd/any-scripts/run-task-2-docker-local.sh
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+# Screenshots
+
+## Task 1 CI Pipeline Passing
+
+![Task 1 CI Success](screenshots/task-1-ci-success.png)
+
+## Task 2 CD Pipeline Passing
 
 ![Task 2 CD Success](screenshots/task-2-cd-success.png)
 
+## Docker Image Published to GitHub Container Registry
+
 ![Task 2 Package Success](screenshots/task-2-package-success.png)
 
-![Task 2 Flask App Local](screenshots/task-2-flask-app-local.png)
+## Docker Image Pulled from GHCR
 
 ![Task 2 Docker Pull](screenshots/task-2-docker-pull.png)
+
+## Flask App Running Locally
+
+![Task 2 Flask App Local](screenshots/task-2-flask-app-local.png)
 
 ---
 
 
 # What I Learnt
 
-From this assignment, I learnt:
+Through this assignment, I learnt:
 
 * How CI and CD differ.
 * How GitHub Actions workflows are structured.
-* How to run automated tests on push.
-* How to build and run Docker images locally.
-* How to push Docker images to GitHub Container Registry.
-* How `GITHUB_TOKEN` can be used securely in workflows.
-* Why Docker tags and build context matter.
+* How to trigger workflows on push.
 
 ---
 
 # Summary
 
-Task 1 demonstrated a basic CI pipeline by automatically running Python unit tests.
+Task 1 demonstrated a basic CI pipeline by automatically running Python unit tests on push.
 
 Task 2 demonstrated a simple CD workflow by building and publishing a Docker image to GitHub Container Registry.
 
-Together, these tasks show how CI/CD can automate testing, packaging, and publishing in a DevOps workflow.
+Together, these tasks show how CI/CD can automate testing, packaging, and publishing as part of a DevOps workflow.
+
